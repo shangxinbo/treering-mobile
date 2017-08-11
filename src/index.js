@@ -46,7 +46,7 @@ export default class Index extends Component {
         this.state = {
             list: [
                 {
-                    "father": "伤心波",
+                    "father": "jasxd",
                     "children": [
                         "asdfas",
                         "123123"
@@ -90,7 +90,8 @@ export default class Index extends Component {
                         <Title>紧急任务</Title>
                     </Body>
                     <Right>
-                        <Button transparent>
+                        <Button transparent 
+                            onPress={() => this.props.navigation.navigate('Add')}>
                             <Icon name='menu' />
                         </Button>
                     </Right>
