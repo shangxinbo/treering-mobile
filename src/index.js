@@ -9,6 +9,27 @@ const styles = StyleSheet.create({
     },
 });
 
+
+function MyList(props) {
+    let item = props.item
+    if (item instanceof Object) {
+        return (
+            <ListItem>
+                <Text>{item.father}</Text>
+                <Right>
+                    <Icon name="arrow-forward" />
+                </Right>
+            </ListItem>
+        )
+    } else {
+        return (
+            <ListItem>
+                <Text>{item}</Text>
+            </ListItem>
+        )
+    }
+}
+
 export default class Index extends Component {
     static navigationOptions = {
         tabBarLabel: 'todos',
@@ -24,10 +45,20 @@ export default class Index extends Component {
         this.ds = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 });
         this.state = {
             list: [
-                'Simon Mignolet', 'Nathaniel Clyne', 'Dejan Lovren', 'Mama Sakho', 'Emre Can',
-                'Simon Mignolet', 'Nathaniel Clyne', 'Dejan Lovren', 'Mama Sakho', 'Emre Can',
-                'Simon Mignolet', 'Nathaniel Clyne', 'Dejan Lovren', 'Mama Sakho', 'Emre Can',
-                'Simon Mignolet', 'Nathaniel Clyne', 'Dejan Lovren', 'Mama Sakho', 'Emre Can'
+                {
+                    "father": "伤心波",
+                    "children": [
+                        "asdfas",
+                        "123123"
+                    ]
+                },
+                {
+                    "father": "呵呵呵",
+                    "children": [
+                        "asdfa"
+                    ]
+                },
+                "123123"
             ]
         }
     }
@@ -50,6 +81,7 @@ export default class Index extends Component {
         })
     }
     render() {
+
         return (
             <Container>
                 <Header>
@@ -67,9 +99,7 @@ export default class Index extends Component {
                     <List
                         dataSource={this.ds.cloneWithRows(this.state.list)}
                         renderRow={(item) =>
-                            <ListItem>
-                                <Text>{item}</Text>
-                            </ListItem>
+                            <MyList item={item} />
                         }
                         renderLeftHiddenRow={data =>
                             <Button full>
