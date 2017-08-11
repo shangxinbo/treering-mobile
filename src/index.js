@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import { Component } from 'react'
 import { Text, Image, StyleSheet, ListView } from 'react-native'
 import { Container, Header, Left, Body, Right, Button, Icon, Title, Content, List, ListItem } from 'native-base'
 
@@ -7,8 +7,7 @@ const styles = StyleSheet.create({
         width: 26,
         height: 30,
     },
-});
-
+})
 
 function MyList(props) {
     let item = props.item
@@ -90,7 +89,7 @@ export default class Index extends Component {
                         <Title>紧急任务</Title>
                     </Body>
                     <Right>
-                        <Button transparent 
+                        <Button transparent
                             onPress={() => this.props.navigation.navigate('Add')}>
                             <Icon name='menu' />
                         </Button>

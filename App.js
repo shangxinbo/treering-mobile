@@ -20,7 +20,7 @@ const tabNav = TabNavigator({
 
 
 const App = StackNavigator({
-    Login:{screen:Login},
+    Login: { screen: Login },
     Home: { screen: tabNav },
     Add: { screen: Add }
 }, {
