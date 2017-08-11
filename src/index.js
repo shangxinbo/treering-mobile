@@ -1,4 +1,4 @@
-import { Component } from 'react'
+import React,{ Component } from 'react'
 import { Text, Image, StyleSheet, ListView } from 'react-native'
 import { Container, Header, Left, Body, Right, Button, Icon, Title, Content, List, ListItem } from 'native-base'
 
@@ -76,7 +76,7 @@ export default class Index extends Component {
                 "password": "shang123"
             })
         }).then(res => {
-            console.log(res)
+            console.log(this)
         })
     }
     render() {

@@ -1,4 +1,4 @@
-import { Component } from 'react'
+import React,{ Component } from 'react'
 import { Text, Image, StyleSheet } from 'react-native'
 import { Container, Button } from 'native-base'
 
