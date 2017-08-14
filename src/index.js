@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { Text, Image, StyleSheet, ListView } from 'react-native'
-import { Container, Header, Left, Body, Right, Button, Icon, Title, Content, List, ListItem } from 'native-base'
+import { Container, Header, Left, Body, Right, Button, Icon, Title, Content, List, ListItem, Toast,Spinner } from 'native-base'
 
 import ajax from './base/ajax'
 
@@ -46,15 +46,15 @@ export default class Index extends Component {
         super(props)
         this.ds = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 });
         this.state = {
-            list: []
+            list: [],
+            loading: true
         }
     }
 
     componentDidMount() {
-        console.log(this.props.navigation.state.params)
         this.getData()
     }
-  
+
     componentDidUpdate() {
         this.saveChange()
     }
@@ -64,7 +64,10 @@ export default class Index extends Component {
             url: '/todos/list',
             data: {},
             success: data => {
-                this.setState({ list: data.data })
+                this.setState({
+                    list: data.data,
+                    loading: false
+                })
             },
             error: err => {
                 Toast.show({
@@ -96,12 +99,11 @@ export default class Index extends Component {
         })
     }
 
-    del(data, secId, rowId) {
-        this.setState((prevState) => {
-            let list = prevState.list
-            list.splice(rowId, 1)
-            return { list: list }
-        })
+    del(secId, rowId, rowMap) {
+        rowMap[`${secId}${rowId}`].props.closeRow()
+        const newData = [...this.state.list];
+        newData.splice(rowId, 1);
+        this.setState({ list: newData })
     }
 
     render() {
@@ -121,22 +123,27 @@ export default class Index extends Component {
                     </Right>
                 </Header>
                 <Content>
-                    <List
-                        dataSource={this.ds.cloneWithRows(this.state.list)}
-                        renderRow={(item) =>
-                            <MyList item={item} />
-                        }
-                        renderLeftHiddenRow={data =>
-                            <Button full >
-                                <Icon active name="information-circle" />
-                            </Button>}
-                        renderRightHiddenRow={(data, secId, rowId) =>
-                            <Button full danger onPress={() => this.del(data, secId, rowId)}>
-                                <Icon active name="trash" />
-                            </Button>}
-                        leftOpenValue={75}
-                        rightOpenValue={-75}
-                    />
+                    {this.state.loading ? (
+                        <Spinner color='blue' />
+                    ) : (
+                            <List
+                                dataSource={this.ds.cloneWithRows(this.state.list)}
+                                renderRow={(item) =>
+                                    <MyList item={item} />
+                                }
+                                renderLeftHiddenRow={data =>
+                                    <Button full >
+                                        <Icon active name="information-circle" />
+                                    </Button>}
+                                renderRightHiddenRow={(data, secId, rowId, rowMap) =>
+                                    <Button full danger onPress={() => this.del(secId, rowId, rowMap)}>
+                                        <Icon active name="trash" />
+                                    </Button>}
+                                leftOpenValue={75}
+                                rightOpenValue={-75}
+                            />
+                        )
+                    }
                 </Content>
             </Container>
         )

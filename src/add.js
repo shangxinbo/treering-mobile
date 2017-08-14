@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { Text, Image, StyleSheet } from 'react-native'
-import { Container, Header, Left, Body, Right, Button, Icon, Title, Content, Item, Input } from 'native-base'
+import { Container, Header, Left, Body, Right, Button, Icon, Title, Content, Item, Input,Toast } from 'native-base'
 import { Grid, Col, Row } from 'react-native-easy-grid'
 import { NavigationActions } from 'react-navigation'
 
@@ -14,7 +14,28 @@ export default class Add extends Component {
 
     submit() {
         if (!this.state.content) return false
-        this.props.navigation.navigate('Home', { content: this.state.content })
+        let list = this.props.navigation.state.params.list
+        list.push(this.state.content)
+
+        ajax({
+            url: '/todos/saveChange',
+            data: {
+                type: 0,
+                arr: list
+            },
+            success: data => {
+                this.props.navigation.navigate('Home')
+            },
+            error: err => {
+                Toast.show({
+                    text: err,
+                    type: 'danger',
+                    duration: 3000
+                })
+            }
+        })
+
+        
     }
 
     render() {
