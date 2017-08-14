@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { Text, Image } from 'react-native'
-import { Container, Item, Input, Button } from 'native-base'
+import { Container, Item, Input, Button, Toast } from 'native-base'
 import { Grid, Col, Row } from 'react-native-easy-grid'
 
 import ajax from './base/ajax'
@@ -58,18 +58,23 @@ export default class Login extends Component {
 
     submit() {
 
+        if (!this.state.username || !this.state.password) return false
+
         ajax({
             url: '/login',
             data: {
-                username: 'shangxinbo',
-                password: 'shang123'
+                name: this.state.username,
+                password: this.state.password
             },
             success: data => {
-                console.log(234)
+                this.props.navigation.navigate('Home')
             },
             error: err => {
-                console.log(123)
-                console.log(err)
+                Toast.show({
+                    text: err,
+                    type: 'danger',
+                    duration: 3000
+                })
             }
         })
 
