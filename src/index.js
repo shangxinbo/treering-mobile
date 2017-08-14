@@ -1,7 +1,8 @@
-import React,{ Component } from 'react'
-import Expo from 'expo'
+import React, { Component } from 'react'
 import { Text, Image, StyleSheet, ListView } from 'react-native'
 import { Container, Header, Left, Body, Right, Button, Icon, Title, Content, List, ListItem } from 'native-base'
+
+import ajax from './base/ajax'
 
 const styles = StyleSheet.create({
     icon: {
@@ -40,55 +41,69 @@ export default class Index extends Component {
             />
         )
     }
-    
+
     constructor(props) {
         super(props)
         this.ds = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 });
         this.state = {
-            list: [
-                {
-                    "father": "jasxd",
-                    "children": [
-                        "asdfas",
-                        "123123"
-                    ]
-                },
-                {
-                    "father": "呵呵呵",
-                    "children": [
-                        "asdfa"
-                    ]
-                },
-                "123123"
-            ]
+            list: []
         }
     }
-    
-    async componentWillMount() {
-        await Expo.Font.loadAsync({
-          Roboto: require('native-base/Fonts/Roboto.ttf'),
-          Roboto_medium: require('native-base/Fonts/Roboto_medium.ttf'),
-        })
-    }
-    
+
     componentDidMount() {
-        //this.getData()
+        console.log(this.props.navigation.state.params)
+        this.getData()
     }
+  
+    componentDidUpdate() {
+        this.saveChange()
+    }
+
     getData() {
-        fetch('http://10.111.23.190:3000/login', {
-            method: "POST",
-            credentials: 'include',
-            headers: {
-                'Content-Type': 'application/json;charset=UTF-8'
+        ajax({
+            url: '/todos/list',
+            data: {},
+            success: data => {
+                this.setState({ list: data.data })
             },
-            body: JSON.stringify({
-                "name": "shangxinbo",
-                "password": "shang123"
-            })
-        }).then(res => {
-            console.log(this)
+            error: err => {
+                Toast.show({
+                    text: err,
+                    type: 'danger',
+                    duration: 3000
+                })
+            }
         })
     }
+
+    saveChange() {
+        ajax({
+            url: '/todos/saveChange',
+            data: {
+                type: 0,
+                arr: this.state.list
+            },
+            success: data => {
+                //console.log(data)
+            },
+            error: err => {
+                Toast.show({
+                    text: err,
+                    type: 'danger',
+                    duration: 3000
+                })
+            }
+        })
+    }
+
+    del(data, secId, rowId) {
+        this.setState((prevState) => {
+            let list = prevState.list
+            list.splice(rowId, 1)
+            return { list: list }
+        })
+    }
+
     render() {
 
         return (
@@ -100,8 +115,8 @@ export default class Index extends Component {
                     </Body>
                     <Right>
                         <Button transparent
-                            onPress={() => this.props.navigation.navigate('Add')}>
-                            <Icon name='menu' />
+                            onPress={() => this.props.navigation.navigate('Add', { list: this.state.list })}>
+                            <Icon name='add' />
                         </Button>
                     </Right>
                 </Header>
@@ -112,11 +127,11 @@ export default class Index extends Component {
                             <MyList item={item} />
                         }
                         renderLeftHiddenRow={data =>
-                            <Button full>
+                            <Button full >
                                 <Icon active name="information-circle" />
                             </Button>}
-                        renderRightHiddenRow={(data, secId, rowId, rowMap) =>
-                            <Button full danger>
+                        renderRightHiddenRow={(data, secId, rowId) =>
+                            <Button full danger onPress={() => this.del(data, secId, rowId)}>
                                 <Icon active name="trash" />
                             </Button>}
                         leftOpenValue={75}

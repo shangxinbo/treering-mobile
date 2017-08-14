@@ -10,7 +10,9 @@ import Login from './login'
 const tabNav = TabNavigator(
     {
         Todos: { screen: Index },
-        History: { screen: History }
+        Important: { screen: Index },
+        History: { screen: History },
+        Alert:{screen:History}
     }, {
         tabBarOptions: {
             activeTintColor: '#e91e63',
@@ -31,4 +33,4 @@ const AppNavigator = StackNavigator(
     }
 )
 
-export default () => <Root><AppNavigator /></Root>
+export default () => <Root><AppNavigator onNavigationStateChange={null} /></Root>
