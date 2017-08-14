@@ -33,7 +33,7 @@ function MyList(props) {
 
 export default class Index extends Component {
     static navigationOptions = {
-        tabBarLabel: 'todos',
+        tabBarLabel: 'impotant',
         tabBarIcon: ({ tintColor }) => (
             <Image
                 source={require('./assets/img/todos_bottom.png')}
@@ -45,7 +45,6 @@ export default class Index extends Component {
     constructor(props) {
         super(props)
         this.ds = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 });
-        console.log(123)
         this.state = {
             list: [],
             loading: true
@@ -64,7 +63,7 @@ export default class Index extends Component {
         ajax({
             url: '/todos/list',
             data: {
-                type:0
+                type:1
             },
             success: data => {
                 this.setState({
@@ -86,7 +85,7 @@ export default class Index extends Component {
         ajax({
             url: '/todos/saveChange',
             data: {
-                type: 0,
+                type: 1,
                 arr: this.state.list
             },
             success: data => {
@@ -114,9 +113,9 @@ export default class Index extends Component {
         return (
             <Container>
                 <Header>
-                    <Left ></Left>
+                    <Left></Left>
                     <Body>
-                        <Title>重要任务</Title>
+                        <Title>紧急任务</Title>
                     </Body>
                     <Right>
                         <Button transparent
@@ -125,7 +124,7 @@ export default class Index extends Component {
                         </Button>
                     </Right>
                 </Header>
-                <Content >
+                <Content>
                     {this.state.loading ? (
                         <Spinner color='blue' />
                     ) : (

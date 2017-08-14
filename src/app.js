@@ -3,6 +3,7 @@ import { TabNavigator, StackNavigator } from 'react-navigation'
 import { Root } from "native-base"
 
 import Index from './index'
+import Important from './important'
 import History from './history'
 import Add from './add'
 import Login from './login'
@@ -10,7 +11,7 @@ import Login from './login'
 const tabNav = TabNavigator(
     {
         Todos: { screen: Index },
-        Important: { screen: Index },
+        Important: { screen: Important },
         History: { screen: History },
         Alert:{screen:History}
     }, {
