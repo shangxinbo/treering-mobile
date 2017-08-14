@@ -1,34 +1,28 @@
-import React from 'react'
-import { TabNavigator, StackNavigator } from 'react-navigation'
-import { Root } from "native-base"
+import Expo, { AppLoading } from "expo"
+import React from "react"
+import App from "./src/app"
 
-import Index from './src/index'
-import History from './src/history'
-import Add from './src/add'
-import Login from './src/login'
-
-const tabNav = TabNavigator(
-    {
-        Todos: { screen: Index },
-        History: { screen: History }
-    }, {
-        tabBarOptions: {
-            activeTintColor: '#e91e63',
-            showIcon: true
-        },
-        swipeEnabled: false,
-        tabBarPosition: 'bottom'
+export default class App1 extends React.Component {
+    constructor() {
+        super()
+        this.state = {
+            isReady: false
+        }
     }
-)
 
-const App = StackNavigator(
-    {
-        Login: { screen: Login },
-        Home: { screen: tabNav },
-        Add: { screen: Add }
-    }, {
-        headerMode: 'none'
+    async componentWillMount() {
+        await Expo.Font.loadAsync({
+            Roboto: require("native-base/Fonts/Roboto.ttf"),
+            Roboto_medium: require("native-base/Fonts/Roboto_medium.ttf"),
+            Ionicons: require("@expo/vector-icons/fonts/Ionicons.ttf")
+        })
+
+        this.setState({ isReady: true })
     }
-)
-
-export default () => <Root><App /></Root>
+    render() {
+        if (!this.state.isReady) {
+            return <AppLoading />
+        }
+        return <App />
+    }
+}

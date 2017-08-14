@@ -1,4 +1,5 @@
 import React,{ Component } from 'react'
+import Expo from 'expo'
 import { Text, Image, StyleSheet, ListView } from 'react-native'
 import { Container, Header, Left, Body, Right, Button, Icon, Title, Content, List, ListItem } from 'native-base'
 
@@ -39,6 +40,7 @@ export default class Index extends Component {
             />
         )
     }
+    
     constructor(props) {
         super(props)
         this.ds = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 });
@@ -61,6 +63,14 @@ export default class Index extends Component {
             ]
         }
     }
+    
+    async componentWillMount() {
+        await Expo.Font.loadAsync({
+          Roboto: require('native-base/Fonts/Roboto.ttf'),
+          Roboto_medium: require('native-base/Fonts/Roboto_medium.ttf'),
+        })
+    }
+    
     componentDidMount() {
         //this.getData()
     }
