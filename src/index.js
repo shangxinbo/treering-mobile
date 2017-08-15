@@ -45,9 +45,8 @@ export default class Index extends Component {
     constructor(props) {
         super(props)
         this.ds = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 });
-        console.log(123)
         this.state = {
-            list: [],
+            list: [''],
             loading: true
         }
     }
@@ -116,11 +115,11 @@ export default class Index extends Component {
                 <Header>
                     <Left ></Left>
                     <Body>
-                        <Title>重要任务</Title>
+                        <Title>紧急任务</Title>
                     </Body>
                     <Right>
                         <Button transparent
-                            onPress={() => this.props.navigation.navigate('Add', { list: this.state.list })}>
+                            onPress={() => this.props.navigation.navigate('Add', { list: this.state.list,type:0 })}>
                             <Icon name='add' />
                         </Button>
                     </Right>

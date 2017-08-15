@@ -15,16 +15,22 @@ export default class Add extends Component {
     submit() {
         if (!this.state.content) return false
         let list = this.props.navigation.state.params.list
+        let type = this.props.navigation.state.params.type
         list.push(this.state.content)
 
         ajax({
             url: '/todos/saveChange',
             data: {
-                type: 0,
+                type: type,
                 arr: list
             },
             success: data => {
-                this.props.navigation.navigate('Home')
+                if(type){
+                    this.props.navigation.navigate('Important')
+                }else{
+                    this.props.navigation.navigate('Home')
+                }
+                
             },
             error: err => {
                 Toast.show({

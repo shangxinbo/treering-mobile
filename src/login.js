@@ -14,6 +14,9 @@ export default class Login extends Component {
             password: ''
         }
     }
+    next() {
+        console.log()
+    }
 
     render() {
         return (
@@ -33,12 +36,15 @@ export default class Login extends Component {
                                     <Item inlineLabel>
                                         <Input
                                             placeholder='用户名'
-                                            onChangeText={(text) => this.setState({ username: text })} />
+                                            onChangeText={(text) => this.setState({ username: text })}
+                                            blurOnSubmit={true}
+                                            onEndEditing={() => this.next()} />
                                     </Item>
-                                    <Item inlineLabel>
-                                        <Input
+                                    <Item inlineLabel last>
+                                        <Input ref="password"
                                             placeholder='密码'
                                             secureTextEntry={true}
+                                            blurOnSubmit={true}
                                             onChangeText={(text) => this.setState({ password: text })} />
                                     </Item>
                                     <Button block

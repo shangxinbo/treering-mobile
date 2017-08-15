@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { Text, Image, StyleSheet, ListView } from 'react-native'
-import { Container, Header, Left, Body, Right, Button, Icon, Title, Content, List, ListItem, Toast,Spinner } from 'native-base'
+import { Container, Header, Left, Body, Right, Button, Icon, Title, Content, List, ListItem, Toast, Spinner } from 'native-base'
 
 import ajax from './base/ajax'
 
@@ -31,7 +31,7 @@ function MyList(props) {
     }
 }
 
-export default class Index extends Component {
+export default class Important extends Component {
     static navigationOptions = {
         tabBarLabel: 'impotant',
         tabBarIcon: ({ tintColor }) => (
@@ -46,7 +46,7 @@ export default class Index extends Component {
         super(props)
         this.ds = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 });
         this.state = {
-            list: [],
+            list: [''],
             loading: true
         }
     }
@@ -63,7 +63,7 @@ export default class Index extends Component {
         ajax({
             url: '/todos/list',
             data: {
-                type:1
+                type: 1
             },
             success: data => {
                 this.setState({
@@ -115,11 +115,11 @@ export default class Index extends Component {
                 <Header>
                     <Left></Left>
                     <Body>
-                        <Title>紧急任务</Title>
+                        <Title>重要任务</Title>
                     </Body>
                     <Right>
                         <Button transparent
-                            onPress={() => this.props.navigation.navigate('Add', { list: this.state.list })}>
+                            onPress={() => this.props.navigation.navigate('Add', { list: this.state.list, type: 1 })}>
                             <Icon name='add' />
                         </Button>
                     </Right>
