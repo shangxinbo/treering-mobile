@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { Text, Image, StyleSheet, ListView } from 'react-native'
-import { Container, Header, Left, Body, Right, Button, Icon, Title, Content, List, ListItem, Toast,Spinner } from 'native-base'
+import { Container, Header, Left, Body, Right, Button, Icon, Title, Content, List, ListItem, Toast, Spinner } from 'native-base'
 
 import ajax from './base/ajax'
 
@@ -63,7 +63,7 @@ export default class Index extends Component {
         ajax({
             url: '/todos/list',
             data: {
-                type:0
+                type: 0
             },
             success: data => {
                 this.setState({
@@ -108,6 +108,7 @@ export default class Index extends Component {
         this.setState({ list: newData })
     }
 
+
     render() {
 
         return (
@@ -119,7 +120,7 @@ export default class Index extends Component {
                     </Body>
                     <Right>
                         <Button transparent
-                            onPress={() => this.props.navigation.navigate('Add', { list: this.state.list,type:0 })}>
+                            onPress={() => this.props.navigation.navigate('Add', { list: this.state.list, type: 0 })}>
                             <Icon name='add' />
                         </Button>
                     </Right>
@@ -133,9 +134,9 @@ export default class Index extends Component {
                                 renderRow={(item) =>
                                     <MyList item={item} />
                                 }
-                                renderLeftHiddenRow={data =>
-                                    <Button full >
-                                        <Icon active name="information-circle" />
+                                renderLeftHiddenRow={(data, secId, rowId, rowMap) =>
+                                    <Button full onPress={() => this.props.navigation.navigate('Add', { list: this.state.list, type: 0, index: rowId })}>
+                                        <Icon active name="add" />
                                     </Button>}
                                 renderRightHiddenRow={(data, secId, rowId, rowMap) =>
                                     <Button full danger onPress={() => this.del(secId, rowId, rowMap)}>

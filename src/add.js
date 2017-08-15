@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { Text, Image, StyleSheet } from 'react-native'
-import { Container, Header, Left, Body, Right, Button, Icon, Title, Content, Item, Input,Toast } from 'native-base'
+import { Container, Header, Left, Body, Right, Button, Icon, Title, Content, Item, Input, Toast } from 'native-base'
 import { Grid, Col, Row } from 'react-native-easy-grid'
 import { NavigationActions } from 'react-navigation'
 
@@ -16,7 +16,21 @@ export default class Add extends Component {
         if (!this.state.content) return false
         let list = this.props.navigation.state.params.list
         let type = this.props.navigation.state.params.type
-        list.push(this.state.content)
+        let index = this.props.navigation.state.params.index
+
+        if (index) {
+            if (list[index] instanceof Object) {
+                list[index].children.push(this.state.content)
+            } else {
+                let tmp = list[index]
+                list[index] = {
+                    father: tmp,
+                    children: [this.state.content]
+                }
+            }
+        } else {
+            list.push(this.state.content)
+        }
 
         ajax({
             url: '/todos/saveChange',
@@ -25,12 +39,12 @@ export default class Add extends Component {
                 arr: list
             },
             success: data => {
-                if(type){
+                if (type) {
                     this.props.navigation.navigate('Important')
-                }else{
+                } else {
                     this.props.navigation.navigate('Home')
                 }
-                
+
             },
             error: err => {
                 Toast.show({
@@ -41,7 +55,7 @@ export default class Add extends Component {
             }
         })
 
-        
+
     }
 
     render() {
