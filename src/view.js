@@ -45,7 +45,7 @@ export default class ChildView extends Component {
                         </Button>
                     </Left>
                     <Body>
-                        <Title>紧急任务</Title>
+                        <Title>{this.props.title}</Title>
                     </Body>
                     <Right></Right>
                 </Header>
