@@ -1,8 +1,9 @@
 import React, { Component } from 'react'
-import { Text, Image, StyleSheet, WebView } from 'react-native'
-import { Container, Header, Left, Body, Right, Button, Icon, Title, Content, View, Toast, Spinner } from 'native-base'
+import { Text, Image, StyleSheet, WebView, Linking } from 'react-native'
+import { Container, Header, Left, Body, Right, Button, Icon, Title, Input, Content, View, Toast, Spinner } from 'native-base'
 import { Grid, Col, Row } from 'react-native-easy-grid'
 import showdown from 'showdown'
+import ajax from './base/ajax'
 showdown.setFlavor('github')
 
 const styles = StyleSheet.create({
@@ -39,19 +40,42 @@ export default class Backup extends Component {
             url: '/memo/view',
             data: {},
             success: data => {
-                let converter = new showdown.Converter()
-                let html = converter.makeHtml(data.data)
-                html = `<html>
-                            <head>
-                                <link href="https://cdnjs.cloudflare.com/ajax/libs/github-markdown-css/2.8.0/github-markdown.min.css" rel="stylesheet" type="text/css" />
-                            </head>
-                            <body  class="markdown-body">${html}</body>
-                        </html>`
+
                 this.setState({
-                    content: html,
+                    content: data.data,
                     loading: false,
                     edit: false
                 })
+            },
+            error: err => {
+                Toast.show({
+                    text: err,
+                    type: 'danger',
+                    duration: 3000
+                })
+            }
+        })
+    }
+
+    mdToHtml() {
+        let converter = new showdown.Converter()
+        let html = converter.makeHtml(this.state.content)
+        return `<html>
+                    <head>
+                        <link href="https://cdnjs.cloudflare.com/ajax/libs/github-markdown-css/2.8.0/github-markdown.min.css" rel="stylesheet" type="text/css" />
+                    </head>
+                    <body  class="markdown-body">${html}</body>
+                </html>`
+    }
+
+    saveAndView() {
+        ajax({
+            url: '/memo/save',
+            data: {
+                content: this.state.content,
+            },
+            success: data => {
+                this.setState({ edit: false })
             },
             error: err => {
                 Toast.show({
@@ -73,12 +97,12 @@ export default class Backup extends Component {
                     </Body>
                     <Right>
                         {this.state.edit ? (
-                            <Button transparent>
-                                <Icon name='edit' />
+                            <Button transparent onPress={() => this.saveAndView()}>
+                                <Icon name='eye' />
                             </Button>
                         ) : (
-                                <Button transparent>
-                                    <Icon name='add' />
+                                <Button transparent onPress={() => this.setState({ edit: true })}>
+                                    <Icon name='create' />
                                 </Button>
                             )
                         }
@@ -90,9 +114,27 @@ export default class Backup extends Component {
                     </Content>
                 ) : (
                         <Grid>
-                            <Row size={2}>
-                                <WebView source={{ html: this.state.content }}></WebView>
-                            </Row>
+                            {this.state.edit ? (
+                                <Row>
+                                    <Input
+                                        style={{ flex: 1 }}
+                                        blurOnSubmit={true}
+                                        value={this.state.content}
+                                        onChangeText={(text) => this.setState({ content: text })}
+                                        multiline={true} />
+                                </Row>
+                            ) : (
+                                    <Row size={2}>
+                                        <WebView
+                                            ref={(ref) => { this.webview = ref; }}
+                                            source={{ html: this.mdToHtml() }}
+                                            onNavigationStateChange={(event) => {
+                                                this.webview.stopLoading()
+                                                Linking.openURL(event.url)
+                                            }} />
+                                    </Row>
+                                )
+                            }
                         </Grid>
                     )
                 }
