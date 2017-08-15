@@ -133,9 +133,9 @@ export default class Important extends Component {
                                 renderRow={(item) =>
                                     <MyList item={item} />
                                 }
-                                renderLeftHiddenRow={data =>
-                                    <Button full >
-                                        <Icon active name="information-circle" />
+                                renderLeftHiddenRow={(data, secId, rowId, rowMap) =>
+                                    <Button full onPress={() => this.props.navigation.navigate('Add', { list: this.state.list, type: 1, index: rowId })}>
+                                        <Icon active name="add" />
                                     </Button>}
                                 renderRightHiddenRow={(data, secId, rowId, rowMap) =>
                                     <Button full danger onPress={() => this.del(secId, rowId, rowMap)}>
