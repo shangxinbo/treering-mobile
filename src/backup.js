@@ -12,18 +12,6 @@ const styles = StyleSheet.create({
     },
 })
 
-const style_markdown = StyleSheet.create({
-    h2: {
-        fontSize: 58
-    },
-    tr: {
-        display: 'flex'
-    },
-    td: {
-        flex: 1
-    }
-})
-
 export default class Backup extends Component {
     static navigationOptions = {
         tabBarLabel: 'backup',
@@ -108,7 +96,6 @@ export default class Backup extends Component {
                         </Grid>
                     )
                 }
-
             </Container>
         )
     }
