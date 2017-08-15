@@ -2,7 +2,6 @@ import React, { Component } from 'react'
 import { Text, Image, StyleSheet, WebView } from 'react-native'
 import { Container, Header, Left, Body, Right, Button, Icon, Title, Content, View, Toast, Spinner } from 'native-base'
 import { Grid, Col, Row } from 'react-native-easy-grid'
-import HTMLView from 'react-native-htmlview'
 import showdown from 'showdown'
 showdown.setFlavor('github')
 
@@ -54,7 +53,12 @@ export default class Backup extends Component {
             success: data => {
                 let converter = new showdown.Converter()
                 let html = converter.makeHtml(data.data)
-                html = `<html><head><link href="https://cdnjs.cloudflare.com/ajax/libs/github-markdown-css/2.8.0/github-markdown.min.css" rel="stylesheet" type="text/css" /></head><body  class="markdown-body">${html}</body></html>`
+                html = `<html>
+                            <head>
+                                <link href="https://cdnjs.cloudflare.com/ajax/libs/github-markdown-css/2.8.0/github-markdown.min.css" rel="stylesheet" type="text/css" />
+                            </head>
+                            <body  class="markdown-body">${html}</body>
+                        </html>`
                 this.setState({
                     content: html,
                     loading: false,
