@@ -6,7 +6,7 @@ import ajax from './base/ajax'
 
 const styles = StyleSheet.create({
     icon: {
-        width: 26,
+        width: 30,
         height: 30,
     },
 })
@@ -36,7 +36,7 @@ export default class Important extends Component {
         tabBarLabel: 'impotant',
         tabBarIcon: ({ tintColor }) => (
             <Image
-                source={require('./assets/img/todos_bottom.png')}
+                source={require('./assets/img/important_bottom.png')}
                 style={[styles.icon, { tintColor: tintColor }]}
             />
         )
