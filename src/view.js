@@ -2,14 +2,12 @@ import React, { Component } from 'react'
 import { Text, StyleSheet, ListView } from 'react-native'
 import { Container, Header, Left, Body, Right, Button, Icon, Title, Content, List, ListItem } from 'native-base'
 
-
 const styles = StyleSheet.create({
     icon: {
         width: 26,
         height: 30,
     },
 })
-
 
 export default class ChildView extends Component {
 
