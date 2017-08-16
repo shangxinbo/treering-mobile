@@ -1,15 +1,28 @@
+
 import React, { Component } from 'react'
 import { Text, Image, StyleSheet, ListView } from 'react-native'
-import { Container, Header, Left, Body, Right, Button, Icon, Title, Content, List, Toast, Spinner } from 'native-base'
-import MyList from './mylist'
-
 import ajax from './base/ajax'
+import {
+    Container,
+    Header,
+    Left,
+    Body,
+    Right,
+    Button,
+    Icon,
+    Title,
+    Content,
+    List,
+    Toast,
+    ListItem,
+    Spinner
+} from 'native-base'
 
 const styles = StyleSheet.create({
     icon: {
-        width: 26,
+        width: 30,
         height: 30,
-    },
+    }
 })
 
 export default class Index extends Component {
@@ -27,7 +40,7 @@ export default class Index extends Component {
         super(props)
         this.ds = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 });
         this.state = {
-            list: [''],
+            list: [],
             loading: true
         }
     }
@@ -42,7 +55,7 @@ export default class Index extends Component {
 
     getData() {
         ajax({
-            url: '/todos/list',
+            url: '/todos/find',
             data: {
                 type: 0
             },
@@ -63,9 +76,8 @@ export default class Index extends Component {
     }
 
     saveChange() {
-        console.log(this.state.list)
         ajax({
-            url: '/todos/saveChange',
+            url: '/todos/save',
             data: {
                 type: 0,
                 arr: this.state.list
@@ -113,18 +125,16 @@ export default class Index extends Component {
                     ) : (
                             <List
                                 dataSource={this.ds.cloneWithRows(this.state.list)}
-                                renderRow={(item,secId,rowId) =>
-                                    <MyList item={item} rowId={rowId} list={this.state.list} navigation={this.props.navigation} />
+                                renderRow={(item, secId, rowId) =>
+                                    <ListItem>
+                                        <Text>{item}</Text>
+                                    </ListItem>
                                 }
-                                renderLeftHiddenRow={(data, secId, rowId, rowMap) =>
-                                    <Button full onPress={() => this.props.navigation.navigate('Add', { list: this.state.list, type: 0, index: rowId })}>
-                                        <Icon active name="add" />
-                                    </Button>}
+                                renderLeftHiddenRow={(data, secId, rowId, rowMap) => false}
                                 renderRightHiddenRow={(data, secId, rowId, rowMap) =>
                                     <Button full danger onPress={() => this.del(secId, rowId, rowMap)}>
                                         <Icon active name="trash" />
                                     </Button>}
-                                leftOpenValue={75}
                                 rightOpenValue={-75}
                             />
                         )
