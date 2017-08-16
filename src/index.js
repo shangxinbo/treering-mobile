@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { Text, Image, StyleSheet, ListView } from 'react-native'
-import { Container, Header, Left, Body, Right, Button, Icon, Title, Content, List, ListItem, Toast, Spinner } from 'native-base'
+import { Container, Header, Left, Body, Right, Button, Icon, Title, Content, List, Toast, Spinner } from 'native-base'
+import MyList from './mylist'
 
 import ajax from './base/ajax'
 
@@ -10,26 +11,6 @@ const styles = StyleSheet.create({
         height: 30,
     },
 })
-
-function MyList(props) {
-    let item = props.item
-    if (item instanceof Object) {
-        return (
-            <ListItem>
-                <Text>{item.father}</Text>
-                <Right>
-                    <Icon name="arrow-forward" />
-                </Right>
-            </ListItem>
-        )
-    } else {
-        return (
-            <ListItem>
-                <Text>{item}</Text>
-            </ListItem>
-        )
-    }
-}
 
 export default class Index extends Component {
     static navigationOptions = {
@@ -82,6 +63,7 @@ export default class Index extends Component {
     }
 
     saveChange() {
+        console.log(this.state.list)
         ajax({
             url: '/todos/saveChange',
             data: {
@@ -131,8 +113,8 @@ export default class Index extends Component {
                     ) : (
                             <List
                                 dataSource={this.ds.cloneWithRows(this.state.list)}
-                                renderRow={(item) =>
-                                    <MyList item={item} />
+                                renderRow={(item,secId,rowId) =>
+                                    <MyList item={item} rowId={rowId} list={this.state.list} navigation={this.props.navigation} />
                                 }
                                 renderLeftHiddenRow={(data, secId, rowId, rowMap) =>
                                     <Button full onPress={() => this.props.navigation.navigate('Add', { list: this.state.list, type: 0, index: rowId })}>
