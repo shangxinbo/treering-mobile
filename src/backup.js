@@ -129,8 +129,10 @@ export default class Backup extends Component {
                                             ref={(ref) => { this.webview = ref; }}
                                             source={{ html: this.mdToHtml() }}
                                             onNavigationStateChange={(event) => {
-                                                this.webview.stopLoading()
-                                                Linking.openURL(event.url)
+                                                if (event.url.indexOf('<html>') < 0) {
+                                                    this.webview.stopLoading()
+                                                    Linking.openURL(event.url)
+                                                }
                                             }} />
                                     </Row>
                                 )
