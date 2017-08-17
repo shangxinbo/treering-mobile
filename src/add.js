@@ -16,29 +16,7 @@ export default class Add extends Component {
         let type = this.props.navigation.state.params.type
         this.props.navigation.state.params.add(this.state.content)
         this.props.navigation.goBack()
-        // ajax({
-        //     url: '/todos/create',
-        //     data: {
-        //         type: type,
-        //         text: this.state.content
-        //     },
-        //     success: data => {
-        //         if (type) {
-        //             this.props.navigation.navigate('Important')
-        //         } else {
-        //             this.props.navigation.goBack()
-        //             //this.props.navigation.navigate('Home')
-        //         }
-
-        //     },
-        //     error: err => {
-        //         Toast.show({
-        //             text: err,
-        //             type: 'danger',
-        //             duration: 3000
-        //         })
-        //     }
-        // })
+       
     }
 
     render() {

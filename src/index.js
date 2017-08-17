@@ -104,7 +104,7 @@ export default class Index extends Component {
     add(content) {
         let list = [...this.state.list]
         list.unshift(content)
-        this.setState({list})
+        this.setState({ list })
         this.saveChange()
     }
 
@@ -113,15 +113,22 @@ export default class Index extends Component {
         return (
             <Container>
                 <Header>
-                    <Left ></Left>
+                    <Left >
+                        <Button transparent
+                            onPress={() => this.props.navigation.navigate('Setting')}>
+                            <Icon name='menu' />
+                        </Button>
+                    </Left>
                     <Body>
                         <Title>紧急任务</Title>
                     </Body>
                     <Right>
                         <Button transparent
-                            onPress={() => this.props.navigation.navigate('Add', { add: (content) => {
-                                this.add(content)
-                            } })}>
+                            onPress={() => this.props.navigation.navigate('Add', {
+                                add: (content) => {
+                                    this.add(content)
+                                }
+                            })}>
                             <Icon name='add' />
                         </Button>
                     </Right>

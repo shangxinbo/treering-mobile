@@ -7,8 +7,9 @@ import Important from './important'
 import History from './history'
 import Backup from './backup'
 import Add from './add'
-import ViewChild from './view'
 import Login from './login'
+import Setting from './setting'
+import Do from './do'
 
 const tabNav = TabNavigator(
     {
@@ -31,7 +32,8 @@ const AppNavigator = StackNavigator(
         Home: { screen: tabNav },
         Login: { screen: Login },
         Add: { screen: Add },
-        ViewChild: { screen: ViewChild }
+        Setting: { screen: Setting },
+        Do: { screen: Do }
     }, {
         headerMode: 'none'
     }
