@@ -1,4 +1,3 @@
-
 import React, { Component } from 'react'
 import { Text, Image, StyleSheet, ListView } from 'react-native'
 import ajax from './base/ajax'
@@ -97,13 +96,13 @@ export default class Index extends Component {
 
     del(secId, rowId, rowMap) {
         rowMap[`${secId}${rowId}`].props.closeRow()
-        const newData = [...this.state.list];
-        newData.splice(rowId, 1);
+        const newData = [...this.state.list]
+        newData.splice(rowId, 1)
         this.setState({ list: newData })
     }
 
     add(content) {
-        let list = [... this.state.list]
+        let list = [...this.state.list]
         list.unshift(content)
         this.setState({list})
         this.saveChange()

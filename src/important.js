@@ -1,8 +1,21 @@
 import React, { Component } from 'react'
 import { Text, Image, StyleSheet, ListView } from 'react-native'
-import { Container, Header, Left, Body, Right, Button, Icon, Title, Content, List, ListItem, Toast, Spinner } from 'native-base'
-
 import ajax from './base/ajax'
+import {
+    Container,
+    Header,
+    Left,
+    Body,
+    Right,
+    Button,
+    Icon,
+    Title,
+    Content,
+    List,
+    Toast,
+    ListItem,
+    Spinner
+} from 'native-base'
 
 const styles = StyleSheet.create({
     icon: {
@@ -10,26 +23,6 @@ const styles = StyleSheet.create({
         height: 30,
     },
 })
-
-function MyList(props) {
-    let item = props.item
-    if (item instanceof Object) {
-        return (
-            <ListItem>
-                <Text>{item.father}</Text>
-                <Right>
-                    <Icon name="arrow-forward" />
-                </Right>
-            </ListItem>
-        )
-    } else {
-        return (
-            <ListItem>
-                <Text>{item}</Text>
-            </ListItem>
-        )
-    }
-}
 
 export default class Important extends Component {
     static navigationOptions = {
@@ -46,7 +39,7 @@ export default class Important extends Component {
         super(props)
         this.ds = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 });
         this.state = {
-            list: [''],
+            list: [],
             loading: true
         }
     }
@@ -61,15 +54,17 @@ export default class Important extends Component {
 
     getData() {
         ajax({
-            url: '/todos/list',
+            url: '/todos/find',
             data: {
                 type: 1
             },
             success: data => {
+                
                 this.setState({
                     list: data.data,
                     loading: false
                 })
+                console.log(data.data.length)
             },
             error: err => {
                 Toast.show({
@@ -83,7 +78,7 @@ export default class Important extends Component {
 
     saveChange() {
         ajax({
-            url: '/todos/saveChange',
+            url: '/todos/save',
             data: {
                 type: 1,
                 arr: this.state.list
@@ -103,9 +98,16 @@ export default class Important extends Component {
 
     del(secId, rowId, rowMap) {
         rowMap[`${secId}${rowId}`].props.closeRow()
-        const newData = [...this.state.list];
-        newData.splice(rowId, 1);
+        const newData = [...this.state.list]
+        newData.splice(rowId, 1)
         this.setState({ list: newData })
+    }
+
+    add(content) {
+        let list = [...this.state.list]
+        list.unshift(content)
+        this.setState({list})
+        this.saveChange()
     }
 
     render() {
@@ -119,7 +121,9 @@ export default class Important extends Component {
                     </Body>
                     <Right>
                         <Button transparent
-                            onPress={() => this.props.navigation.navigate('Add', { list: this.state.list, type: 1 })}>
+                            onPress={() => this.props.navigation.navigate('Add', { add: (content) => {
+                                this.add(content)
+                            } })}>
                             <Icon name='add' />
                         </Button>
                     </Right>
@@ -130,18 +134,16 @@ export default class Important extends Component {
                     ) : (
                             <List
                                 dataSource={this.ds.cloneWithRows(this.state.list)}
-                                renderRow={(item) =>
-                                    <MyList item={item} />
+                                renderRow={(item, secId, rowId) =>
+                                    <ListItem>
+                                        <Text>{item}</Text>
+                                    </ListItem>
                                 }
-                                renderLeftHiddenRow={(data, secId, rowId, rowMap) =>
-                                    <Button full onPress={() => this.props.navigation.navigate('Add', { list: this.state.list, type: 1, index: rowId })}>
-                                        <Icon active name="add" />
-                                    </Button>}
+                                renderLeftHiddenRow={(data, secId, rowId, rowMap) => false}
                                 renderRightHiddenRow={(data, secId, rowId, rowMap) =>
                                     <Button full danger onPress={() => this.del(secId, rowId, rowMap)}>
                                         <Icon active name="trash" />
                                     </Button>}
-                                leftOpenValue={75}
                                 rightOpenValue={-75}
                             />
                         )
