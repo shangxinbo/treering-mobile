@@ -28,8 +28,8 @@ const tabNav = TabNavigator(
 
 const AppNavigator = StackNavigator(
     {
-        Login: { screen: Login },
         Home: { screen: tabNav },
+        Login: { screen: Login },
         Add: { screen: Add },
         ViewChild: { screen: ViewChild }
     }, {

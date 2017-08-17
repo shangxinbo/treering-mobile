@@ -102,6 +102,12 @@ export default class Index extends Component {
         this.setState({ list: newData })
     }
 
+    add(content) {
+        let list = [... this.state.list]
+        list.unshift(content)
+        this.setState({list})
+        this.saveChange()
+    }
 
     render() {
 
@@ -114,7 +120,9 @@ export default class Index extends Component {
                     </Body>
                     <Right>
                         <Button transparent
-                            onPress={() => this.props.navigation.navigate('Add', { list: this.state.list, type: 0 })}>
+                            onPress={() => this.props.navigation.navigate('Add', { add: (content) => {
+                                this.add(content)
+                            } })}>
                             <Icon name='add' />
                         </Button>
                     </Right>
